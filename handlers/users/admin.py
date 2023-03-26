@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 from keyboards.default import menu
 from utils import get_votes
 from keyboards.inline import ovoz_berish
-from loader import dp, db, bot, tolangan_malumot
+from loader import dp, db, bot, tolangan_malumot, obunachiga_pul, taklifga_pul
 from data.config import ADMINS
 import asyncio, datetime, pytz
 
@@ -42,9 +42,11 @@ async def djjkdv(msg : types.Message, state : FSMContext):
     
 @dp.message_handler(regexp="Ovoz pul:+", chat_id = ADMINS)
 async def mkdfkv(msg : types.Message):
+    global obunachiga_pul
     pul = msg.text.split(':')[1]
     if pul.isnumeric():
         db.update_hisob(pul, 3)
+        obunachiga_pul = int(pul)
         await msg.answer(f"{pul} ga o'zgardi")
     else:
         await msg.answer("O'zgarmadi")
@@ -61,9 +63,11 @@ async def mkdfkv(msg : types.Message):
         
 @dp.message_handler(regexp="Taklif pul:+", chat_id = ADMINS)
 async def mkdfkv(msg : types.Message):
+    global taklifga_pul
     pul = msg.text.split(':')[1]
     if pul.isnumeric():
         db.update_hisob(pul, 4)
+        taklifga_pul = int(pul)
         await msg.answer(f"{pul} ga o'zgardi")
     else:
         await msg.answer("O'zgarmadi")
