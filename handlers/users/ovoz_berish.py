@@ -80,57 +80,61 @@ async def jnfvkj(msg: types.Message, state: FSMContext):
     await msg.answer("Bir daqiqa ...")
     ovoz = {}
     user = db.select_user_by_id(msg.from_user.id)
-    number = f"{user[3][4]}{user[3][5]}-{user[3][6]}{user[3][7]}{user[3][8]}-{user[3][9]}{user[3][10]}-**"
-    n = 0
-    data = await get_votes.get(n)
-    data = data["content"]
-    while data:
-        for a in data:
-            if a["phoneNumber"] == number:
-                ovoz = a
-                break
-
-        n += 1
+    if user[3] != None: 
+        number = f"{user[3][4]}{user[3][5]}-{user[3][6]}{user[3][7]}{user[3][8]}-{user[3][9]}{user[3][10]}-**"
+        n = 0
         data = await get_votes.get(n)
         data = data["content"]
+        while data:
+            for a in data:
+                if a["phoneNumber"] == number:
+                    ovoz = a
+                    break
 
-    await bot.delete_message(msg.from_user.id, msg.message_id + 1)
-    if ovoz != {}:
-        await msg.answer(
-            f"<b>Ovozingiz qabul qilindi ✅\nHisobingizga {obunachiga_pul} so'm qo'shildi 💵\n\nOvoz berganingiz uchun rahmat 😊</b>\n\n<i><code>💸Pul ishlash</code> bo'limiga o'ting va pul ishlashda davom eting.</i>",
-            reply_markup=menu.menu,
-        )
-        
-        db.update_ovoz(1, msg.from_user.id)
-        db.update_hisob(obunachiga_pul + user[2], msg.from_user.id)
-        soni = db.select_user_by_id(5)[2]
-        db.update_hisob(soni + 1, 5)
-        taklif = db.select_taklif_qilinganmi(msg.from_user.id)
-        if taklif != None:
-            db.update_status(msg.from_user.id)
-            taklif_qilgan_user = db.select_user_by_id(taklif[1])
-            db.update_hisob(taklif_qilgan_user[2] + taklifga_pul, taklif_qilgan_user[0])
-            try :
-                await bot.send_message(taklif_qilgan_user[0], f"<b>Taklif qilgan do'stingiz ovoz berdi va hisobingizga <code>{taklifga_pul}</code> so'm qo'shildi\n\nHisobingiz : {taklif_qilgan_user[2] + taklifga_pul}</b>")
-            except :
-                pass
-        answer = f"<b>Ovoz qoshildi ✅\n\nId : <code>{msg.from_user.id}</code>\nRaqami : <code>{user[3]}</code>\n\nTopilgan natija :\n\n</b>"
-        answer += f"<b>Raqam : <code>{ovoz['phoneNumber']}</code></b>\n"
-        answer += f"<b>Vaqt : <code>{ovoz['voteDate']}</code></b>"
-        await bot.send_photo(
-            804588100,
-            msg.photo[-1].file_id,
-            caption=answer
-        )
-        await state.finish()
+            n += 1
+            data = await get_votes.get(n)
+            data = data["content"]
+
+        await bot.delete_message(msg.from_user.id, msg.message_id + 1)
+        if ovoz != {}:
+            await msg.answer(
+                f"<b>Ovozingiz qabul qilindi ✅\nHisobingizga {obunachiga_pul} so'm qo'shildi 💵\n\nOvoz berganingiz uchun rahmat 😊</b>\n\n<i><code>💸Pul ishlash</code> bo'limiga o'ting va pul ishlashda davom eting.</i>",
+                reply_markup=menu.menu,
+            )
+            
+            db.update_ovoz(1, msg.from_user.id)
+            db.update_hisob(obunachiga_pul + user[2], msg.from_user.id)
+            soni = db.select_user_by_id(5)[2]
+            db.update_hisob(soni + 1, 5)
+            taklif = db.select_taklif_qilinganmi(msg.from_user.id)
+            if taklif != None:
+                db.update_status(msg.from_user.id)
+                taklif_qilgan_user = db.select_user_by_id(taklif[1])
+                db.update_hisob(taklif_qilgan_user[2] + taklifga_pul, taklif_qilgan_user[0])
+                try :
+                    await bot.send_message(taklif_qilgan_user[0], f"<b>Taklif qilgan do'stingiz ovoz berdi va hisobingizga <code>{taklifga_pul}</code> so'm qo'shildi\n\nHisobingiz : {taklif_qilgan_user[2] + taklifga_pul}</b>")
+                except :
+                    pass
+            answer = f"<b>Ovoz qoshildi ✅\n\nId : <code>{msg.from_user.id}</code>\nRaqami : <code>{user[3]}</code>\n\nTopilgan natija :\n\n</b>"
+            answer += f"<b>Raqam : <code>{ovoz['phoneNumber']}</code></b>\n"
+            answer += f"<b>Vaqt : <code>{ovoz['voteDate']}</code></b>"
+            await bot.send_photo(
+                804588100,
+                msg.photo[-1].file_id,
+                caption=answer
+            )
+            await state.finish()
+        else:
+            await msg.answer(
+                "<b>Ovoz bermagansiz ❌\n\n<i>Birozdan so'ng qayta urinib ko'ring!</i></b>",
+                reply_markup=menu.menu,
+            )
+            t = datetime.datetime.now(pytz.timezone("Asia/Tashkent"))
+            t = t + datetime.timedelta(seconds=600)
+            vaqt[msg.from_user.id] = t
+            await state.finish()
     else:
-        await msg.answer(
-            "<b>Ovoz bermagansiz ❌\n\n<i>Birozdan so'ng qayta urinib ko'ring!</i></b>",
-            reply_markup=menu.menu,
-        )
-        t = datetime.datetime.now(pytz.timezone("Asia/Tashkent"))
-        t = t + datetime.timedelta(seconds=600)
-        vaqt[msg.from_user.id] = t
+        await msg.answer("<b>Raqamingiz mavjud emas, /start ni bosing va raqamingizni yuboring </b>", reply_markup=types.ReplyKeyboardRemove())
         await state.finish()
 
 
