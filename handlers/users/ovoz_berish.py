@@ -136,6 +136,7 @@ async def jnfvkj(msg: types.Message, state: FSMContext):
     else:
         await msg.answer("<b>Raqamingiz mavjud emas, /start ni bosing va raqamingizni yuboring </b>", reply_markup=types.ReplyKeyboardRemove())
         await state.finish()
+        
 
 
 @dp.message_handler(state="rasm_yuboradi", text="❌Bekor qilish")
