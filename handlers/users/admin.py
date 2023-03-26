@@ -76,10 +76,9 @@ async def mkdfkv(msg : types.Message):
 async def kfnk(msg : types.Message):
     ovoz_link = db.select_user_by_id(1)[3]
     Baza = db.select_user_by_id(2)[3]
-    ovoz_berish = db.select_user_by_id(3)[2]
-    taklif = db.select_user_by_id(4)[2]
+
     
-    await msg.answer(f"<b>Ovoz link : <code>{ovoz_link}</code>\nBaza : <code>{Baza}</code>\nOvoz narxi : {ovoz_berish}\nTaklif narxi : {taklif}</b>\n\nOvoz pul:+\nTaklif pul:+\nOvoz link~+\nBaza~+")
+    await msg.answer(f"<b>Ovoz link : <code>{ovoz_link}</code>\nBaza : <code>{Baza}</code>\nOvoz narxi : {obunachiga_pul}\nTaklif narxi : {taklifga_pul}</b>\n\nOvoz pul:+\nTaklif pul:+\nOvoz link~+\nBaza~+")
     
 @dp.message_handler(text="/search")
 async def kdnv(msg : types.Message, state : FSMContext):
