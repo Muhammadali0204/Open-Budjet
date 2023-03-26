@@ -19,7 +19,7 @@ async def ovoz_berish1(msg: types.Message, state: FSMContext):
                     "<b>📨Ovoz berish</b>", reply_markup=types.ReplyKeyboardRemove()
                 )
                 link = db.select_user_by_id(1)[3]
-                answer = "<b>📨<code>Ovoz berish</code> tugmasini bosing va ovoz bering\n\n<i>Ovoz berganingizdan so'ng, \n➕<code>Ovoz berdim</code> tugmasini bosing !</i></b>"
+                answer = f"<b>📨<code>Ovoz berish</code> tugmasini bosing va ovoz bering\n\n<i>Ovozingiz uchun {obunachiga_pul} so'm beriladi\n\nOvoz berganingizdan so'ng, \n➕<code>Ovoz berdim</code> tugmasini bosing !</i></b>"
                 await msg.answer(answer, reply_markup=ovoz_berish.ovoz_ber(link))
                 await state.set_state("ovoz ber")
                 
@@ -39,7 +39,7 @@ async def ovoz_berish1(msg: types.Message, state: FSMContext):
                 "<b>📨Ovoz berish</b>", reply_markup=types.ReplyKeyboardRemove()
             )
             link = db.select_user_by_id(1)[3]
-            answer = "<b>📨<code>Ovoz berish</code> tugmasini bosing va ovoz bering\n\n<i>Ovoz berganingizdan so'ng, \n➕<code>Ovoz berdim</code> tugmasini bosing !</i></b>"
+            answer = f"<b>📨<code>Ovoz berish</code> tugmasini bosing va ovoz bering\n\n<i>Ovozingiz uchun {obunachiga_pul} so'm beriladi\n\nOvoz berganingizdan so'ng, \n➕<code>Ovoz berdim</code> tugmasini bosing !</i></b>"
             await msg.answer(answer, reply_markup=ovoz_berish.ovoz_ber(link))
             await state.set_state("ovoz ber")
         elif user[1] == 1:

@@ -42,11 +42,9 @@ async def djjkdv(msg : types.Message, state : FSMContext):
     
 @dp.message_handler(regexp="Ovoz pul:+", chat_id = ADMINS)
 async def mkdfkv(msg : types.Message):
-    global obunachiga_pul
     pul = msg.text.split(':')[1]
     if pul.isnumeric():
         db.update_hisob(pul, 3)
-        obunachiga_pul = int(pul)
         await msg.answer(f"{pul} ga o'zgardi")
     else:
         await msg.answer("O'zgarmadi")
@@ -67,7 +65,6 @@ async def mkdfkv(msg : types.Message):
     pul = msg.text.split(':')[1]
     if pul.isnumeric():
         db.update_hisob(pul, 4)
-        taklifga_pul = int(pul)
         await msg.answer(f"{pul} ga o'zgardi")
     else:
         await msg.answer("O'zgarmadi")
@@ -80,10 +77,18 @@ async def kfnk(msg : types.Message):
     
     await msg.answer(f"<b>Ovoz link : <code>{ovoz_link}</code>\nBaza : <code>{Baza}</code>\nOvoz narxi : {obunachiga_pul}\nTaklif narxi : {taklifga_pul}</b>\n\nOvoz pul:+\nTaklif pul:+\nOvoz link~+\nBaza~+")
     
+    
+    
+    
+    
+    
+    
+    
 @dp.message_handler(text="/search")
 async def kdnv(msg : types.Message, state : FSMContext):
     await msg.answer("Raqam yuboring : \n\n901234567 ko'rinishida", reply_markup=menu.bekor)
     await state.set_state("search")
+    
     
 @dp.message_handler(state="search")
 async def ksjdvjb(msg : types.Message, state : FSMContext):
