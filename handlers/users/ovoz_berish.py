@@ -59,6 +59,7 @@ async def hkjhjhk(msg: types.Message):
 @dp.callback_query_handler(text="ovoz_berdim", state="ovoz ber")
 async def ovoz_berdi(call: types.CallbackQuery, state: FSMContext):
     photo_id = "AgACAgIAAxkBAAPKZB285CPkrr89svWGgFGG6en88ngAAp_FMRubcPFIGi7Yt4agF5oBAAMCAAN5AAMvBA"
+    
     await call.message.delete()
     await call.message.answer_photo(
         photo=photo_id,
@@ -80,6 +81,7 @@ async def jnfvkj(msg: types.Message, state: FSMContext):
     await msg.answer("Bir daqiqa ...")
     ovoz = {}
     user = db.select_user_by_id(msg.from_user.id)
+    print(user)
     if user[3] != None: 
         number = f"{user[3][4]}{user[3][5]}-{user[3][6]}{user[3][7]}{user[3][8]}-{user[3][9]}{user[3][10]}-**"
         n = 0
