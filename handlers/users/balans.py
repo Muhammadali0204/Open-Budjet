@@ -11,19 +11,25 @@ from data.config import ADMINS
 @dp.message_handler(text="💰Balans")
 async def dfnvkjdf(msg : types.Message, state : FSMContext):
     user1 = db.select_user_by_id(msg.from_user.id)
-    answer = f"<b>💰Sizning balansingiz : <code>{user1[2]}</code> so'm</b>\n"
-    answer += f"<b>📱Raqamingiz : <code>{user1[3]}</code></b>\n"
-    if user1[4] != None:
-        answer += f"<b>💳Kartangiz : <code>{user1[4]} ({user1[5]})</code></b>\n"
-    takliflar = db.select_takliflar(msg.from_user.id)
-    if takliflar == []:
-        answer += "<b>🔗Taklif qilgan do'stlaringiz yo'q</b>"
+    if user1 != None:
+        answer = f"<b>💰Sizning balansingiz : <code>{user1[2]}</code> so'm</b>\n"
+        answer += f"<b>📱Raqamingiz : <code>{user1[3]}</code></b>\n"
+        if user1[4] != None:
+            answer += f"<b>💳Kartangiz : <code>{user1[4]} ({user1[5]})</code></b>\n"
+        takliflar = db.select_takliflar(msg.from_user.id)
+        if takliflar == []:
+            answer += "<b>🔗Taklif qilgan do'stlaringiz yo'q</b>"
+        else:
+            answer += f"<b>🔗Taklif qilgan do'stlaringiz soni : <code>{len(takliflar)}</code> ta</b>"
+            
+        answer += f"\n\n<i>Minimal {obunachiga_pul} so'm pul yecha olasiz</i>"
+        await msg.answer(answer, reply_markup=balans.balans_keyboard(user1))
+        await state.set_state("balans")
     else:
-        answer += f"<b>🔗Taklif qilgan do'stlaringiz soni : <code>{len(takliflar)}</code> ta</b>"
-        
-    answer += f"\n\n<i>Minimal {obunachiga_pul} so'm pul yecha olasiz</i>"
-    await msg.answer(answer, reply_markup=balans.balans_keyboard(user1))
-    await state.set_state("balans")
+        await msg.answer(
+                    "<b>Raqamingiz mavjud emas, /start ni bosing va raqamingizni yuboring </b>",
+                    reply_markup=types.ReplyKeyboardRemove(),
+                )
     
 @dp.callback_query_handler(text="ortga", state = "balans")
 async def kgkgf(call : types.CallbackQuery, state : FSMContext):

@@ -9,11 +9,61 @@ import asyncio, datetime, pytz
 
 @dp.message_handler(text="📨Ovoz berish")
 async def ovoz_berish1(msg: types.Message, state: FSMContext):
-    try:
-        time = vaqt[msg.from_user.id]
-        now = datetime.datetime.now(pytz.timezone("Asia/Tashkent"))
-        if now > time:
-            user = db.select_user_by_id(msg.from_user.id)
+    user = db.select_user_by_id(msg.from_user.id)
+    if user != None:
+        try:
+            time = vaqt[msg.from_user.id]
+            now = datetime.datetime.now(pytz.timezone("Asia/Tashkent"))
+            if now > time:
+                if user[1] == 1:
+                    await msg.answer(
+                        "<b>Siz ovoz berib bo'lgansiz</b>\n\n<i>Ammo siz do'stlaringizni taklif qilib pul ishlashingiz mumkin.\nBatafsil : <code>💸Pul ishlash</code></i>"
+                    )
+                    return
+                elif user[3] != None:
+                    ovoz = {}
+                    number = f"{user[3][4]}{user[3][5]}-{user[3][6]}{user[3][7]}{user[3][8]}-{user[3][9]}{user[3][10]}-**"
+                    n = 0
+                    data = await get_votes.get(n)
+                    data = data["content"]
+                    while data:
+                        for a in data:
+                            if a["phoneNumber"] == number:
+                                ovoz = a
+                                break
+
+                        n += 1
+                        data = await get_votes.get(n)
+                        data = data["content"]
+
+                    if ovoz == {}:
+                        if user[1] == 0:
+                            await msg.answer(
+                                "<b>📨Ovoz berish</b>",
+                                reply_markup=types.ReplyKeyboardRemove(),
+                            )
+                            link = db.select_user_by_id(1)[3]
+                            answer = f"<b>📨<code>Ovoz berish</code> tugmasini bosing va ovoz bering\n\n<i>Ovozingiz uchun {obunachiga_pul} so'm beriladi\n\nOvoz berganingizdan so'ng, \n➕<code>Ovoz berdim</code> tugmasini bosing !</i></b>"
+                            await msg.answer(
+                                answer, reply_markup=ovoz_berish.ovoz_ber(link)
+                            )
+                            await state.set_state("ovoz ber")
+                    else:
+                        await msg.answer(
+                            "<b>Siz ovoz berib bo'lgansiz</b>\n\n<i>Ammo siz do'stlaringizni taklif qilib pul ishlashingiz mumkin.\nBatafsil : <code>💸Pul ishlash</code></i>"
+                        )
+                        db.update_ovoz(1, msg.from_user.id)
+                else:
+                    await msg.answer(
+                        "<b>Raqamingiz mavjud emas, /start ni bosing va raqamingizni yuboring </b>",
+                        reply_markup=types.ReplyKeyboardRemove(),
+                    )
+            elif now <= time:
+                t = time - now
+                await msg.answer(
+                    f"<b>{t.seconds//60} daqiqa {t.seconds%60} soniyadan so'ng ovoz bera olasiz!</b>"
+                )
+        except:
             if user[1] == 1:
                 await msg.answer(
                     "<b>Siz ovoz berib bo'lgansiz</b>\n\n<i>Ammo siz do'stlaringizni taklif qilib pul ishlashingiz mumkin.\nBatafsil : <code>💸Pul ishlash</code></i>"
@@ -34,18 +84,14 @@ async def ovoz_berish1(msg: types.Message, state: FSMContext):
                     n += 1
                     data = await get_votes.get(n)
                     data = data["content"]
-
                 if ovoz == {}:
                     if user[1] == 0:
                         await msg.answer(
-                            "<b>📨Ovoz berish</b>",
-                            reply_markup=types.ReplyKeyboardRemove(),
+                            "<b>📨Ovoz berish</b>", reply_markup=types.ReplyKeyboardRemove()
                         )
                         link = db.select_user_by_id(1)[3]
                         answer = f"<b>📨<code>Ovoz berish</code> tugmasini bosing va ovoz bering\n\n<i>Ovozingiz uchun {obunachiga_pul} so'm beriladi\n\nOvoz berganingizdan so'ng, \n➕<code>Ovoz berdim</code> tugmasini bosing !</i></b>"
-                        await msg.answer(
-                            answer, reply_markup=ovoz_berish.ovoz_ber(link)
-                        )
+                        await msg.answer(answer, reply_markup=ovoz_berish.ovoz_ber(link))
                         await state.set_state("ovoz ber")
                 else:
                     await msg.answer(
@@ -57,52 +103,11 @@ async def ovoz_berish1(msg: types.Message, state: FSMContext):
                     "<b>Raqamingiz mavjud emas, /start ni bosing va raqamingizni yuboring </b>",
                     reply_markup=types.ReplyKeyboardRemove(),
                 )
-        elif now <= time:
-            t = time - now
-            await msg.answer(
-                f"<b>{t.seconds//60} daqiqa {t.seconds%60} soniyadan so'ng ovoz bera olasiz!</b>"
-            )
-    except:
-        user = db.select_user_by_id(msg.from_user.id)
-        if user[1] == 1:
-            await msg.answer(
-                "<b>Siz ovoz berib bo'lgansiz</b>\n\n<i>Ammo siz do'stlaringizni taklif qilib pul ishlashingiz mumkin.\nBatafsil : <code>💸Pul ishlash</code></i>"
-            )
-            return
-        elif user[3] != None:
-            ovoz = {}
-            number = f"{user[3][4]}{user[3][5]}-{user[3][6]}{user[3][7]}{user[3][8]}-{user[3][9]}{user[3][10]}-**"
-            n = 0
-            data = await get_votes.get(n)
-            data = data["content"]
-            while data:
-                for a in data:
-                    if a["phoneNumber"] == number:
-                        ovoz = a
-                        break
-
-                n += 1
-                data = await get_votes.get(n)
-                data = data["content"]
-            if ovoz == {}:
-                if user[1] == 0:
-                    await msg.answer(
-                        "<b>📨Ovoz berish</b>", reply_markup=types.ReplyKeyboardRemove()
-                    )
-                    link = db.select_user_by_id(1)[3]
-                    answer = f"<b>📨<code>Ovoz berish</code> tugmasini bosing va ovoz bering\n\n<i>Ovozingiz uchun {obunachiga_pul} so'm beriladi\n\nOvoz berganingizdan so'ng, \n➕<code>Ovoz berdim</code> tugmasini bosing !</i></b>"
-                    await msg.answer(answer, reply_markup=ovoz_berish.ovoz_ber(link))
-                    await state.set_state("ovoz ber")
-            else:
-                await msg.answer(
-                    "<b>Siz ovoz berib bo'lgansiz</b>\n\n<i>Ammo siz do'stlaringizni taklif qilib pul ishlashingiz mumkin.\nBatafsil : <code>💸Pul ishlash</code></i>"
+    else:
+        await msg.answer(
+                    "<b>Raqamingiz mavjud emas, /start ni bosing va raqamingizni yuboring </b>",
+                    reply_markup=types.ReplyKeyboardRemove(),
                 )
-                db.update_ovoz(1, msg.from_user.id)
-        else:
-            await msg.answer(
-                "<b>Raqamingiz mavjud emas, /start ni bosing va raqamingizni yuboring </b>",
-                reply_markup=types.ReplyKeyboardRemove(),
-            )
 
 
 @dp.message_handler(state="ovoz ber", content_types=types.ContentTypes.ANY)
@@ -115,8 +120,8 @@ async def hkjhjhk(msg: types.Message):
 
 @dp.callback_query_handler(text="ovoz_berdim", state="ovoz ber")
 async def ovoz_berdi(call: types.CallbackQuery, state: FSMContext):
-    # photo_id = "AgACAgIAAxkBAAPKZB285CPkrr89svWGgFGG6en88ngAAp_FMRubcPFIGi7Yt4agF5oBAAMCAAN5AAMvBA"
-    photo_id = "AgACAgIAAxkBAAI0OGQhS5qqOKmTfC3PYaEqoqHW6NSFAALsxzEb9pkISReHZjTtZfhdAQADAgADeQADLwQ"  # Sinov bot uchun
+    photo_id = "AgACAgIAAxkBAAPKZB285CPkrr89svWGgFGG6en88ngAAp_FMRubcPFIGi7Yt4agF5oBAAMCAAN5AAMvBA"
+    # photo_id = "AgACAgIAAxkBAAI0OGQhS5qqOKmTfC3PYaEqoqHW6NSFAALsxzEb9pkISReHZjTtZfhdAQADAgADeQADLwQ"  # Sinov bot uchun
     await call.message.delete()
     await call.message.answer_photo(
         photo=photo_id,
