@@ -37,7 +37,6 @@ async def ovoz_berish1(msg: types.Message, state: FSMContext):
 
                 if ovoz == {}:
                     if user[1] == 0:
-                        print(2)
                         await msg.answer(
                             "<b>📨Ovoz berish</b>",
                             reply_markup=types.ReplyKeyboardRemove(),
@@ -49,7 +48,6 @@ async def ovoz_berish1(msg: types.Message, state: FSMContext):
                         )
                         await state.set_state("ovoz ber")
                 else:
-                    print(3)
                     await msg.answer(
                         "<b>Siz ovoz berib bo'lgansiz</b>\n\n<i>Ammo siz do'stlaringizni taklif qilib pul ishlashingiz mumkin.\nBatafsil : <code>💸Pul ishlash</code></i>"
                     )
