@@ -59,7 +59,7 @@ async def hkjhjhk(msg: types.Message):
 @dp.callback_query_handler(text="ovoz_berdim", state="ovoz ber")
 async def ovoz_berdi(call: types.CallbackQuery, state: FSMContext):
     photo_id = "AgACAgIAAxkBAAPKZB285CPkrr89svWGgFGG6en88ngAAp_FMRubcPFIGi7Yt4agF5oBAAMCAAN5AAMvBA"
-    
+    # photo 
     await call.message.delete()
     await call.message.answer_photo(
         photo=photo_id,
