@@ -125,7 +125,7 @@ async def ovoz_berdi(call: types.CallbackQuery, state: FSMContext):
     await call.message.delete()
     await call.message.answer_photo(
         photo=photo_id,
-        caption="<b>Ovoz berganingizni tasdiqlash uchun screen shot'ni yuboring\n\n</b><i>Yuqoridagi rasmdagidek holatda</i>",
+        caption="<b>Ovoz berganingizni tasdiqlash uchun screen shot'ni yuboring\n\n</b><i>Yuqoridagi rasmdagidek, *Ism va id'lar ko'rsatilgan holatda bo'lsin</i>",
         reply_markup=menu.bekor,
     )
     await state.set_state("rasm_yuboradi")
