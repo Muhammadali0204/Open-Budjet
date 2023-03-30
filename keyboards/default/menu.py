@@ -10,7 +10,10 @@ menu = ReplyKeyboardMarkup(
             KeyboardButton(text="💸Pul ishlash")
         ],
         [
-            KeyboardButton(text="🧮Statistika")
+            KeyboardButton(text="📊Statistika"),
+            KeyboardButton(text="📝Yoriqnoma")
+        ],[
+            KeyboardButton(text="💳To'lovlar kanali")
         ]
     ], resize_keyboard=True
 )

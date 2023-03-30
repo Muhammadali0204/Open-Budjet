@@ -1,13 +1,14 @@
-from aiogram import types
+from aiogram import types, filters
 from aiogram.dispatcher import FSMContext
 from keyboards.default import menu
 from keyboards.inline import ovoz_berish
 from loader import dp, db, bot, vaqt, obunachiga_pul, taklifga_pul
 from utils import get_votes
+from data.config import ADMINS
 import asyncio, datetime, pytz
 
 
-@dp.message_handler(text="📨Ovoz berish")
+@dp.message_handler(filters.ChatTypeFilter(types.ChatType.PRIVATE),text="📨Ovoz berish")
 async def ovoz_berish1(msg: types.Message, state: FSMContext):
     user = db.select_user_by_id(msg.from_user.id)
     if user != None:
@@ -120,8 +121,10 @@ async def hkjhjhk(msg: types.Message):
 
 @dp.callback_query_handler(text="ovoz_berdim", state="ovoz ber")
 async def ovoz_berdi(call: types.CallbackQuery, state: FSMContext):
-    photo_id = "AgACAgIAAxkBAAPKZB285CPkrr89svWGgFGG6en88ngAAp_FMRubcPFIGi7Yt4agF5oBAAMCAAN5AAMvBA"
+    # photo_id = "AgACAgIAAxkBAAPKZB285CPkrr89svWGgFGG6en88ngAAp_FMRubcPFIGi7Yt4agF5oBAAMCAAN5AAMvBA" # Meni botim uchun
     # photo_id = "AgACAgIAAxkBAAI0OGQhS5qqOKmTfC3PYaEqoqHW6NSFAALsxzEb9pkISReHZjTtZfhdAQADAgADeQADLwQ"  # Sinov bot uchun
+    # photo_id = "AgACAgIAAxkBAAMJZCMUBisLbrIuWeMGBiw9fpCDDeYAAu_HMRuLaBhJQmPQoH2bu9ABAAMCAAN5AAMvBA" # Sanjarni boti uchun
+    photo_id = "AgACAgIAAxkBAANYZCW2z-HC0_qV8Z5RPCzYBu3q-VIAAqvGMRsSpTBJ3qqXJuoJn5gBAAMCAAN5AAMvBA"  # Serquyosh MFY
     await call.message.delete()
     await call.message.answer_photo(
         photo=photo_id,
@@ -170,12 +173,15 @@ async def jnfvkj(msg: types.Message, state: FSMContext):
             soni = db.select_user_by_id(5)[2]
             db.update_hisob(soni + 1, 5)
             taklif = db.select_taklif_qilinganmi(msg.from_user.id)
-            if taklif != None:
+            if taklif != None and len(str(taklif[1])) >= 3:
                 db.update_status(msg.from_user.id)
                 taklif_qilgan_user = db.select_user_by_id(taklif[1])
-                db.update_hisob(
-                    taklif_qilgan_user[2] + taklifga_pul, taklif_qilgan_user[0]
-                )
+                try:
+                    db.update_hisob(
+                        taklif_qilgan_user[2] + taklifga_pul, taklif_qilgan_user[0]
+                    )
+                except :
+                    pass
                 try:
                     await bot.send_message(
                         taklif_qilgan_user[0],
@@ -183,10 +189,10 @@ async def jnfvkj(msg: types.Message, state: FSMContext):
                     )
                 except:
                     pass
-            answer = f"<b>Ovoz qoshildi ✅\n\nId : <code>{msg.from_user.id}</code>\nRaqami : <code>{user[3]}</code>\n\nTopilgan natija :\n\n</b>"
+            answer = f"<b>Ovoz qoshildi ✅\n\nID : <a href = 'tg://user?id={int(msg.from_user.id)}'>{msg.from_user.id}</a>\nRaqami : <code>{user[3]}</code>\n\nTopilgan natija :\n\n</b>"
             answer += f"<b>Raqam : <code>{ovoz['phoneNumber']}</code></b>\n"
             answer += f"<b>Vaqt : <code>{ovoz['voteDate']}</code></b>"
-            await bot.send_photo(804588100, msg.photo[-1].file_id, caption=answer)
+            await bot.send_photo(-1001830513983, msg.photo[-1].file_id, caption=answer)
             await state.finish()
         else:
             await msg.answer(
@@ -211,6 +217,6 @@ async def sjdk(msg: types.Message, state: FSMContext):
     await state.finish()
 
 
-# @dp.message_handler(content_types=types.ContentTypes.PHOTO)
-# async def mkdlfk(msg: types.Message):
-#     print(msg.photo[-1].file_id)
+@dp.message_handler(content_types=types.ContentTypes.PHOTO)
+async def mkdlfk(msg: types.Message):
+    print(msg.photo[-1].file_id)

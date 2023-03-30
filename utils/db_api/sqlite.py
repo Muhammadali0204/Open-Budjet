@@ -67,6 +67,12 @@ class Database:
             parameters=(id, ovoz, hisob, tel, karta, karta_egasi),
             commit=True,
         )
+        
+    def select_all_users(self): # this-----------------------------------
+        sql = """
+        SELECT * FROM Users WHERE id > 100
+        """
+        return self.execute(sql, fetchall=True)
 
     def select_user_by_id(self, id):
         return self.execute(

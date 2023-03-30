@@ -1,12 +1,12 @@
 [Unit]
-Description=Open budjet bot
+Description=Open budjet bot 2
 After=network.target
 
 [Service]
 User=ubuntu
 Group=ubuntu
 Type=simple
-WorkingDirectory=/home/ubuntu/Open budjet
+WorkingDirectory=/home/ubuntu/Open-budjet2
 ExecStart=/home/ubuntu/Javob_tekshir_bot_python/venv/bin/python app.py
 
 [Install]
