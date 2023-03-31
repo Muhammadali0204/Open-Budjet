@@ -50,7 +50,7 @@ async def sndks(call : types.CallbackQuery, state : FSMContext):
     user = db.select_user_by_id(call.from_user.id)
     if user[2] >= obunachiga_pul:
         db.update_hisob(0, call.from_user.id)
-        ans = f"<b>Raqamga pul yechish : \n\nID : <a href = 'tg://user?id={user[0]}'>{user[0]}</a>\nRaqam : <code>{user[3]}</code>\nMablag' : <code>{user[2]}</code></b>"
+        ans = f"<b>Raqamga pul yechish : \n\nID : <a href = 'tg://user?id={user[0]}'>{user[0]}</a>\nRaqam : <code>{user[3][4:-1]}</code>\nMablag' : {user[2]}</b>"
         await bot.send_message(-1001976913492, ans, reply_markup=bajarildi.bajarildi(f"{user[0]}:{user[3]}:{user[2]}:telefon"))
         answer = f"<b><code>{user[3]}</code> raqamiga <code>{user[2]}</code> so'm mablag' tez orada tashlab beriladi 😊</b>"
         await call.message.answer(answer, reply_markup=menu.menu)
@@ -85,7 +85,7 @@ async def skjosdvnnosv(msg : types.Message, state : FSMContext):
     if raqam.startswith(('+99890', '+99891', '+99893', '+99894', '+99895', '+99897', '+99899', '+99888')) and len(raqam) == 13 and raqam[1:13].isnumeric():
         user = db.select_user_by_id(msg.from_user.id)
         db.update_hisob(0, msg.from_user.id)
-        ans = f"<b>Raqamga pul yechish : \n\nID : <a href = 'tg://user?id={user[0]}'>{user[0]}</a>\nRaqam : <code>{raqam}</code>\nMablag' : <code>{user[2]}</code></b>"
+        ans = f"<b>Raqamga pul yechish : \n\nID : <a href = 'tg://user?id={user[0]}'>{user[0]}</a>\nRaqam : <code>{raqam[4:-1]}</code>\nMablag' : {user[2]}</b>"
         await bot.send_message(-1001976913492, ans, reply_markup=bajarildi.bajarildi(f"{user[0]}:{raqam}:{user[2]}:telefon"))
         answer = f"<b><code>{raqam}</code> raqamiga <code>{user[2]}</code> so'm mablag' tez orada tashlab beriladi 😊</b></i>"
         await msg.answer(answer, reply_markup=menu.menu)
@@ -98,7 +98,7 @@ async def sndks(call : types.CallbackQuery, state : FSMContext):
     user = db.select_user_by_id(call.from_user.id)
     if int(user[2]) >= int(obunachiga_pul):
         db.update_hisob(0, call.from_user.id)
-        ans = f"<b>Kartaga pul yechish : \nID : <a href = 'tg://user?id={user[0]}'>{user[0]}</a>\nKarta raqam : <code>{user[4]}({user[5]})</code>\nMablag' : <code>{user[2]}</code></b>"
+        ans = f"<b>Kartaga pul yechish : \nID : <a href = 'tg://user?id={user[0]}'>{user[0]}</a>\nKarta raqam : <code>{user[4]}({user[5]})</code>\nMablag' : {user[2]}</b>"
         await bot.send_message(-1001976913492, ans, reply_markup=bajarildi.bajarildi(f"{user[0]}:{user[4]}:{user[2]}:karta"))
         answer = f"<b><code>{user[4]}</code> karta raqamiga <code>{user[2]}</code> so'm mablag' tez orada o'tkazib beriladi 😊</b>"
         await call.message.answer(answer, reply_markup=menu.menu)

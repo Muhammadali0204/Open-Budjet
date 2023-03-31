@@ -124,7 +124,7 @@ async def ovoz_berdi(call: types.CallbackQuery, state: FSMContext):
     # photo_id = "AgACAgIAAxkBAAPKZB285CPkrr89svWGgFGG6en88ngAAp_FMRubcPFIGi7Yt4agF5oBAAMCAAN5AAMvBA" # Meni botim uchun
     # photo_id = "AgACAgIAAxkBAAI0OGQhS5qqOKmTfC3PYaEqoqHW6NSFAALsxzEb9pkISReHZjTtZfhdAQADAgADeQADLwQ"  # Sinov bot uchun
     # photo_id = "AgACAgIAAxkBAAMJZCMUBisLbrIuWeMGBiw9fpCDDeYAAu_HMRuLaBhJQmPQoH2bu9ABAAMCAAN5AAMvBA" # Sanjarni boti uchun
-    photo_id = "AgACAgIAAxkBAANYZCW2z-HC0_qV8Z5RPCzYBu3q-VIAAqvGMRsSpTBJ3qqXJuoJn5gBAAMCAAN5AAMvBA"  # Serquyosh MFY
+    photo_id = "AgACAgIAAxkBAAILKWQm2JlMOnZhNc-1llOel1OCmayhAAJjzjEbe285Se0Ht7evPhA4AQADAgADeQADLwQ"  # Serquyosh MFY
     await call.message.delete()
     await call.message.answer_photo(
         photo=photo_id,
@@ -217,6 +217,6 @@ async def sjdk(msg: types.Message, state: FSMContext):
     await state.finish()
 
 
-@dp.message_handler(content_types=types.ContentTypes.PHOTO)
-async def mkdlfk(msg: types.Message):
-    print(msg.photo[-1].file_id)
+# @dp.message_handler(content_types=types.ContentTypes.PHOTO)
+# async def mkdlfk(msg: types.Message):
+#     print(msg.photo[-1].file_id)
